@@ -1,0 +1,14 @@
+INFO _internal.py:87  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+INFO _internal.py:87  * Restarting with stat
+WARNING _internal.py:87  * Debugger is active!
+INFO _internal.py:87  * Debugger PIN: 251-568-532
+DEBUG index.py:12 调试信息
+INFO index.py:13 详细信息
+WARNING index.py:14 警告信息
+ERROR index.py:15 错误信息
+DEBUG index.py:18 ===调试信息
+INFO index.py:19 ===详细信息
+WARNING index.py:20 ===警告信息
+ERROR index.py:21 ===错误信息
+INFO _internal.py:87 127.0.0.1 - - [11/May/2018 21:33:30] "GET / HTTP/1.1" 200 -
+INFO _internal.py:87 127.0.0.1 - - [11/May/2018 21:33:30] "GET /favicon.ico HTTP/1.1" 404 -
