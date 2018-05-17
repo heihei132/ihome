@@ -60,8 +60,6 @@ def create_app(config_name):
 
 
 
-
-
 def log_file(log_level):
     # 设置日志的记录等级:常见debug<info<waring<error
     logging.basicConfig(level=log_level)  # 调试debug级

@@ -23,7 +23,7 @@ function generateImageCode() {
     //获取随机字符串编号
     imageCodeId = generateUUID()
 
-    //拼接一个访问路径               ?是拼接参数
+    //拼接一个访问路径
     image_url = "/api/v1.0/image_code?cur_id=" + imageCodeId + "&pre_id=" + preImageCodeId
 
     //将image_url设置到img标签中
@@ -127,4 +127,66 @@ $(document).ready(function() {
     });
 
     // TODO: 注册的提交(判断参数是否为空)
+     $(".form-register").submit(function (e) {
+        e.preventDefault() //禁止表单的默认事件
+
+        // 取到用户输入的内容
+        var mobile = $("#mobile").val()
+        var phonecode = $("#phonecode").val()
+        var password = $("#password").val()
+        var password2 = $("#password2").val()
+
+        // 判断参数
+        if (!mobile) {
+            $("#mobile-err span").html("请填写正确的手机号！");
+            $("#mobile-err").show();
+            return;
+        }
+        if (!phonecode) {
+            $("#phone-code-err span").html("请填写短信验证码！");
+            $("#phone-code-err").show();
+            return;
+        }
+        if (!password) {
+            $("#password-err span").html("请填写密码!");
+            $("#password-err").show();
+            return;
+        }
+        if (password != password2) {
+            $("#password2-err span").html("两次密码不一致!");
+            $("#password2-err").show();
+            return;
+        }
+
+        // 参数拼接
+        var params = {
+            "mobile":mobile,
+            "sms_code":phonecode,
+            "password":password
+        }
+
+         // 发送post请求
+
+        $.ajax({
+            url:"/api/v1.0/user",
+            type: "post",
+            headers: {
+                "X-CSRFToken": getCookie("csrf_token")
+            },
+            data: JSON.stringify(params),
+            contentType: "application/json",
+            success: function (resp) {
+                if (resp.errno == "0"){
+                    // 直接回到首页
+                    location.href = "/index.html"
+                }else {
+                    $("#password2-err span").html(resp.errmsg)
+                    $("#password2-err").show()
+                }
+            }
+        })
+
+    })
+
+
 })

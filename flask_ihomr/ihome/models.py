@@ -30,6 +30,37 @@ class User(BaseModel, db.Model):
     houses = db.relationship("House", backref="user")  # 用户发布的房屋
     orders = db.relationship("Order", backref="user")  # 用户下的订单
 
+    #对用户密码加密的方法
+    # def jiami_password(self,value):
+    #     return generate_password_hash(value)
+
+    @property#获取值的时候走该方法
+    def password(self,value):
+        raise AttributeError('不能读取')
+    @password.setter#而设置值的时候走该方法
+    def password(self,value):
+        self.password_hash = generate_password_hash(value)
+
+    #检验密码真确性,r如果密码正确返回true
+    def check_password(self,value):
+        return check_password_hash(self.password_hash,value)
+
+
+
+
+    #将用户对象信息转成成字典封装###################
+    def to_list(self):
+        user_dict = {
+            "user_id": self.id,
+            "name": self.name,
+            "mobile": self.mobile,
+            "avatar_url": constants.QINIU_DOMIN_PREFIX + self.avatar_url if self.avatar_url else ""
+        }
+        return user_dict
+
+
+
+
 
 class Area(BaseModel, db.Model):
     """城区"""

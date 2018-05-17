@@ -12,7 +12,8 @@ $(document).ready(function() {
     });
     // TODO: 添加登录表单提交操作
     $(".form-login").submit(function(e){
-        e.preventDefault();
+        e.preventDefault();//阻止表单的默认事件
+
         mobile = $("#mobile").val();
         passwd = $("#password").val();
         if (!mobile) {
@@ -25,5 +26,32 @@ $(document).ready(function() {
             $("#password-err").show();
             return;
         }
+
+        //参数拼接
+        var params = {
+            "mobile":mobile,
+            "password":passwd
+        }
+
+        // 发送登录请求
+        $.ajax({
+            url: "/api/v1.0/session",
+            method: "post",
+            headers: {
+                "X-CSRFToken": getCookie("csrf_token")
+            },
+            data: JSON.stringify(params),
+            contentType: "application/json",
+            success: function (resp) {// 请求之后的回调函数
+                if (resp.errno == "0") {
+                    // 登录成功跳转到首页页面
+                    location.href = "/index.html"
+                } else {
+                    $("#password-err span").html(resp.errmsg)
+                    $("#password-err").show()
+                }
+            }
+        })
+
     });
 })
