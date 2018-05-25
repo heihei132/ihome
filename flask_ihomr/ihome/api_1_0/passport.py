@@ -64,6 +64,7 @@ def get_user_login_state():
     }
     return jsonify(errno=RET.OK,errmsg="获取成功",data=user_dict)
 
+
 #功能描述: 登录功能
 #请求路径: /api/v1.0/session
 #请求方式:ＰＯＳＴ
@@ -145,6 +146,7 @@ def login():
 
     # 7.返回登录信息给前端
     return jsonify(errno=RET.OK,errmsg="登录成功")
+
 
 #功能描述: 注册
 #请求路径:/api/v1.0/user

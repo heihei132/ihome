@@ -45,14 +45,16 @@ function updateHouseData(action) {
         p:next_page
     };
     // TODO: 获取房屋列表信息
-    /*
     $.get("/api/v1.0/houses", params, function (resp) {
+        // 方法请求成功了
         house_data_querying = false
         if (resp.errno == "0") {
+            // 将总页数赋值给total_page
             total_page = resp.data.total_page
             if (total_page == 0) {
                 $(".house-list").html("未查询到数据")
             }else {
+                // 将下一页赋值给当前页
                 cur_page = next_page
                 if (action == "renew") {
                     $(".house-list").html(template("house-list-tmpl", {"houses": resp.data.houses}))
@@ -62,16 +64,18 @@ function updateHouseData(action) {
             }
         }
     })
-    */
 
 }
 
 $(document).ready(function(){
+    //通过正则表达式获取到url地址中的所有参数
     var queryData = decodeQuery();
+
+    // 依次取出切割的参数内容
     var startDate = queryData["sd"];
     var endDate = queryData["ed"];
     $("#start-date").val(startDate); 
-    $("#end-date").val(endDate); 
+    $("#end-date").val(endDate);
     updateFilterDateDisplay();
     var areaName = queryData["aname"];
     if (!areaName) areaName = "位置区域";
@@ -98,6 +102,7 @@ $(document).ready(function(){
             }
             // 在页面添加好城区选项信息后，更新展示房屋列表信息
             updateHouseData("renew");
+
             var windowHeight = $(window).height()
             // 为窗口的滚动添加事件函数
             window.onscroll=function(){

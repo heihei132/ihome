@@ -18,5 +18,8 @@ manager = Manager(app)
 Migrate(app,db)
 manager.add_command("db",MigrateCommand)
 
+print('4764767657657657',__name__)
+
 if __name__ == "__main__":
     manager.run()
+

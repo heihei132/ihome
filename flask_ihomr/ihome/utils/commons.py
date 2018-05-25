@@ -13,6 +13,7 @@ from functools import wraps
 
 
 class RegexConverter(BaseConverter):
+    #适用于多个视图函数
     def __init__(self,url_map,regex):
                             #regex:新正则规则
         super(RegexConverter,self).__init__(url_map)

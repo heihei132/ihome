@@ -26,7 +26,13 @@ function showErrorMsg() {
 
 $(document).ready(function(){
     // TODO: 判断用户是否登录
+    $.get("/api/v1.0/session", function (resp) {
+        if (!(resp.data.user_id && resp.data.name)) {
+            location.href = "/login.html"
+        }
+    })
 
+    // 日期选择
     $(".input-daterange").datepicker({
         format: "yyyy-mm-dd",
         startDate: "today",
@@ -48,10 +54,59 @@ $(document).ready(function(){
             $(".order-amount>span").html(amount.toFixed(2) + "(共"+ days +"晚)");
         }
     });
+
+    // 参数解析获取
     var queryData = decodeQuery();
     var houseId = queryData["hid"];
 
     // TODO: 获取房屋的基本信息
 
+   $.get("/api/v1.0/houses/" + houseId, function (resp) {
+        if (resp.errno == "0") {
+            // 设置房屋图片
+            $(".house-info>img").attr("src", resp.data.house.img_urls[0])
+            // 设置房屋标题
+            $(".house-text>h3").html(resp.data.house.title)
+            // 设置价格
+            $(".house-text span").html((resp.data.house.price / 100).toFixed(2))
+        }else {
+            alert(resp.errmsg)
+        }
+    })
+
     // TODO: 订单提交
+    $(".submit-btn").on("click", function () {
+
+        // 取到用户选择的时间
+        var start_date = $("#start-date").val()
+        var end_date = $("#end-date").val()
+
+        if (!(start_date && end_date)) {
+            alert("请选择时间")
+            return
+        }
+
+        var params = {
+            "house_id": houseId,
+            "start_date": start_date,
+            "end_date": end_date
+        }
+
+        $.ajax({
+            url: "/api/v1.0/orders",
+            type: "post",
+            contentType: "application/json",
+            headers: {
+                "X-CSRFToken": getCookie("csrf_token")
+            },
+            data: JSON.stringify(params),
+            success: function (resp) {
+                if (resp.errno == "0") {
+                    // 代表下单成功
+                    // 跳转到订单列表页
+                    location.href = "/orders.html"
+                }
+            }
+        })
+    })
 })

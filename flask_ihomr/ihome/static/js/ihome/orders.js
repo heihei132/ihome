@@ -19,10 +19,45 @@ $(document).ready(function(){
     $(window).on('resize', centerModals);
 
     // TODO: 查询房客订单
+    $.get("/api/v1.0/user/orders?role=custom", function (resp) {
+        if (resp.errno == "0") {
+            // 设置数据
+            var html = template("orders-list-tmpl", {"orders": resp.data.orders})
+            $(".orders-list").html(html)
 
-    // TODO: 查询成功之后需要设置评论的相关处理
-    $(".order-comment").on("click", function(){
-        var orderId = $(this).parents("li").attr("order-id");
-        $(".modal-comment").attr("order-id", orderId);
-    });
+            // 查询成功之后需要设置评论的相关处理
+            $(".order-comment").on("click", function(){
+                var orderId = $(this).parents("li").attr("order-id");
+                $(".modal-comment").attr("order-id", orderId);
+            });
+
+            //点击评论后执行该函数
+            $(".modal-comment").on('click', function () {
+                var orderId = $(this).attr("order-id")
+                // 评论
+                var comment = $("#comment").val()
+                $.ajax({
+                    url: "/api/v1.0/orders/" + orderId + "/comment",
+                    type: "put",
+                    contentType: "application/json",
+                    headers: {
+                        "X-CSRFToken": getCookie("csrf_token")
+                    },
+                    data: JSON.stringify({"comment": comment}),
+                    success: function (resp) {
+                        $(".orders-list>li[order-id="+ orderId +"]>div.order-content>div.order-text>ul li:eq(4)>span").html("已完成");
+                        $("ul.orders-list>li[order-id="+ orderId +"]>div.order-title>div.order-operate").hide();
+                        $("#comment-modal").modal("hide");
+                        location.reload()
+                    }
+                })
+
+            })
+        }else if(resp.errno == "4101") {
+            location.href = "/"
+        } else {
+            alert(resp.errmsg)
+        }
+    })
+
 });

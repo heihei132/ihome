@@ -3,13 +3,13 @@ from ihome.libs.yuntongxun.CCPRestSDK import REST
 import ConfigParser
 
 # 说明：主账号，登陆云通讯网站后，可在控制台首页中看到开发者主账号ACCOUNT SID。
-accountSid = '控制台的account id';
+accountSid = '8a216da861f5a257016204a0d5ac06f0';#控制台的account id
 
 # 说明：主账号Token，登陆云通讯网站后，可在控制台首页中看到开发者主账号AUTH TOKEN。
-accountToken = '账号auth token';
+accountToken = '07885bc11c584f1ba6342a3cc8d7d2a4';#账号auth token
 
-# 请使用管理控制台中已创建应用的APPID。
-appId = '应用管理 的app id';
+# 请使用管理控制台中已创建应用的APPID  #应用管理 的app id
+appId = '8a216da86339b5e8016357432e3f0fd1';
 
 # 说明：请求地址，生产环境配置成app.cloopen.com。
 serverIP = 'app.cloopen.com';

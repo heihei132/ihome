@@ -37,13 +37,11 @@ $(document).ready(function(){
             $(".detail-con").html(html)
 
             // 判断当前登录用户是否是该房屋的房东，如果不是，就是显示预订按钮
-
             if (resp.data.user_id != resp.data.house.user_id) {
                 // 显示预订按钮
                 $(".book-house").show()
                 $(".book-house").attr("href", "/booking.html?hid=" + resp.data.house.hid)
             }
-
 
         }else {
             alert(resp.errmsg)
